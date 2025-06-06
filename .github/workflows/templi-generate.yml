@@ -1,0 +1,56 @@
+
+name: templi-generate 
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Delete all files except .git
+        run: |
+          find . -mindepth 1 -maxdepth 1 ! -name ".git" -exec rm -rf {} +
+
+      - name: Install Templi
+        run: |
+          mkdir -p /tmp/templi
+          curl -L -o /tmp/templi/templi-cli-linux-x86_64@4.1.1.tar.gz https://github.com/RickaPrincy/Templi/releases/download/v4.1.1/templi-cli-linux-x86_64@4.1.1.tar.gz
+          tar -xzf /tmp/templi/templi-cli-linux-x86_64@4.1.1.tar.gz -C /tmp/templi
+          echo "/tmp/templi/templi-cli-linux-x86_64@4.1.1/bin" >> $GITHUB_PATH
+      
+      - name: Generate project 
+        run: |
+          git config user.name "templi-web[bot]"
+          git config user.email "209866697+templi-web[bot]@users.noreply.github.com"
+          templi generate -t https://github.com/RickaPrincy/templi-templates.git -s libc++ -o generated -PROJECT_NAME "cpp_inquirer" -PROJECT_NAME_LOWERCASE "cpp_inquirer" -PROJECT_NAME_UPPERCASE "CPP_INQUIRER" -NAMESPACE "cpp_inquirer" -AUTHOR "RickaPrincy" -AUTHOR_EMAIL "rckprincy@gmail.com" -DESCRIPTION "C++ inquirer" -GIT_URL "https://github.com/RickaPrincy/cpp-inquirer" -AUR_NAME "cpp_inquirer"
+
+      - name: Move generated files to root
+        run: |
+          shopt -s dotglob
+          mv generated/* .
+          rm -rf generated
+
+      - name: Rename .github folder since it's not allowed
+        run: |
+          if [ -d ".github" ]; then
+            mv .github __github__
+          fi
+
+      - name: Commit changes
+        run: |
+          git add --all 
+          git commit -m "chore: generate project with templi" || echo "Nothing to commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

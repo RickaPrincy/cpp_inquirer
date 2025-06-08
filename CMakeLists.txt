@@ -21,9 +21,10 @@ set(CPP_INQUIRER_VERSION ${PROJECT_VERSION})
 set(CPP_INQUIRER_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 
 # list of options
-option(BUILD_SHARED_LIBS "Build cpp_inquirer as a shared library" ON)
+option(BUILD_SHARED_LIBS "Build cpp_inquirer as a shared library" OFF)
 option(CPP_INQUIRER_LIB_BUILD "Build cpp_inquirer lib" ON)
 option(CPP_INQUIRER_LIB_INSTALL "Install cpp_inquirer lib" ${CPP_INQUIRER_IS_MAIN_PROJECT})
+option(CPP_INQUIRER_BUILD_EXAMPLE "Build the examples in the project" ${CPP_INQUIRER_IS_MAIN_PROJECT})
 
 # configure build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -59,6 +60,10 @@ if(NOT CMAKE_BUILD_SHARED_LIBS)
 endif()
 
 add_subdirectory(sources)
+
+if(CPP_INQUIRER_BUILD_EXAMPLE)
+  add_subdirectory(example)
+endif()
 
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")

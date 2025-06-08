@@ -58,7 +58,7 @@ namespace cpp_inquirer
 			result = key::enter;
 		}
 
-		tcsetattr(STDIN_FILENO, TCSANOW, &oldt);  // toujours restaurer le terminal
+		tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 		return result;
 #endif
 	}

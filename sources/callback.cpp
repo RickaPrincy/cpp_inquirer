@@ -93,11 +93,6 @@ namespace cpp_inquirer::callback
 		};
 	}
 
-	auto is_one_of(std::string name, std::initializer_list<std::string> values) -> when_callback
-	{
-		return is_one_of(std::move(name), std::vector<std::string>(values));
-	}
-
 	auto is_none_of(std::string name, std::vector<std::string> values) -> when_callback
 	{
 		return [name = std::move(name), values = std::move(values)](const answers& ans)
@@ -108,10 +103,5 @@ namespace cpp_inquirer::callback
 			}
 			return true;
 		};
-	}
-
-	auto is_none_of(std::string name, std::initializer_list<std::string> values) -> when_callback
-	{
-		return is_none_of(std::move(name), std::vector<std::string>(values));
 	}
 }  // namespace cpp_inquirer::callback

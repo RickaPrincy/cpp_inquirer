@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <functional>
-#include <initializer_list>
 #include <map>
 #include <memory>
 #include <string>
@@ -88,6 +87,7 @@ namespace cpp_inquirer
 		virtual ~question() = default;
 
 		static auto builder() -> question_builder;
+
 		friend question_builder;
 		friend class question_factory;
 	};
@@ -103,9 +103,7 @@ namespace cpp_inquirer
 		auto prompt() -> std::string override;
 
 		static auto prompt(std::string label,
-			std::initializer_list<std::shared_ptr<validator>> validators) -> std::string;
-		static auto prompt(std::string label, std::vector<std::shared_ptr<validator>> validators)
-			-> std::string;
+			std::vector<std::shared_ptr<validator>> validators = {}) -> std::string;
 	};
 
 	class boolean_question : public question
@@ -128,8 +126,6 @@ namespace cpp_inquirer
 		auto prompt() -> std::string override;
 
 		static auto prompt(std::string label, std::vector<pair_of_string> options) -> std::string;
-		static auto prompt(std::string label, std::initializer_list<pair_of_string> options)
-			-> std::string;
 	};
 
 	class question_factory
@@ -158,14 +154,8 @@ namespace cpp_inquirer
 		auto label(std::string label) -> question_builder &;
 		auto type(question_type type) -> question_builder &;
 		auto when(std::function<bool(const answers &)> condition) -> question_builder &;
-
 		auto options(std::vector<pair_of_string> options) -> question_builder &;
-		auto options(std::initializer_list<pair_of_string> options) -> question_builder &;
-
 		auto validators(std::vector<std::shared_ptr<validator>> validators) -> question_builder &;
-		auto validators(std::initializer_list<std::shared_ptr<validator>> validators)
-			-> question_builder &;
-
 		auto build() -> std::shared_ptr<question>;
 	};
 
@@ -176,7 +166,6 @@ namespace cpp_inquirer
 
 	public:
 		inquirer() = default;
-		inquirer(std::initializer_list<std::shared_ptr<question>> questions);
 		inquirer(std::vector<std::shared_ptr<question>> questions);
 
 		auto add(std::shared_ptr<question> q) -> inquirer &;
@@ -202,11 +191,6 @@ namespace cpp_inquirer
 		auto is_not_equal(std::string name, std::string value) -> when_callback;
 
 		auto is_one_of(std::string name, std::vector<std::string> values) -> when_callback;
-		auto is_one_of(std::string name, std::initializer_list<std::string> values)
-			-> when_callback;
-
 		auto is_none_of(std::string name, std::vector<std::string> values) -> when_callback;
-		auto is_none_of(std::string name, std::initializer_list<std::string> values)
-			-> when_callback;
 	}  // namespace callback
 }  // namespace cpp_inquirer

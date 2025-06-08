@@ -2,11 +2,6 @@
 
 namespace cpp_inquirer
 {
-	inquirer::inquirer(std::initializer_list<std::shared_ptr<question>> questions)
-		: m_questions(std::vector<std::shared_ptr<question>>(questions))
-	{
-	}
-
 	inquirer::inquirer(std::vector<std::shared_ptr<question>> questions)
 		: m_questions(std::move(questions))
 	{

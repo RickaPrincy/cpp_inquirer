@@ -25,6 +25,8 @@ auto main(int argc, char *argv[]) -> int
 				.when(callback::is_none_of("license", { "GPL", "UNLICENSE" }))
 				.build());
 
+	auto question_ = text_question::prompt("What is your name ? ");
+
 	for (const auto &[name, answer] : q.prompt())
 	{
 		std::cout << name << " -> " << answer << "\n";

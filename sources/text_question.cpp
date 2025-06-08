@@ -27,11 +27,4 @@ namespace cpp_inquirer
 	{
 		return text_question("QUESTION", std::move(label), std::move(validators)).prompt();
 	}
-
-	auto text_question::prompt(std::string label,
-		std::initializer_list<std::shared_ptr<validator>> validators) -> std::string
-	{
-		return text_question::prompt(
-			std::move(label), std::vector<std::shared_ptr<validator>>(validators));
-	}
 }  // namespace cpp_inquirer

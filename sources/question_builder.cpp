@@ -25,23 +25,11 @@ namespace cpp_inquirer
 		return *this;
 	}
 
-	auto question_builder::options(std::initializer_list<pair_of_string> options)
-		-> question_builder&
-	{
-		return this->options(std::vector<pair_of_string>(options));
-	}
-
 	auto question_builder::validators(std::vector<std::shared_ptr<validator>> validators)
 		-> question_builder&
 	{
 		this->m_question->m_validators = std::move(validators);
 		return *this;
-	}
-
-	auto question_builder::validators(std::initializer_list<std::shared_ptr<validator>> validators)
-		-> question_builder&
-	{
-		return this->validators(std::vector<std::shared_ptr<validator>>(validators));
 	}
 
 	auto question_builder::type(question_type type) -> question_builder&

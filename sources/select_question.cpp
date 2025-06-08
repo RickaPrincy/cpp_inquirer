@@ -65,12 +65,6 @@ namespace cpp_inquirer
 		return select_question("QUESTION", std::move(label), std::move(options)).prompt();
 	}
 
-	auto select_question::prompt(std::string label, std::initializer_list<pair_of_string> options)
-		-> std::string
-	{
-		return select_question::prompt(std::move(label), std::vector<pair_of_string>(options));
-	}
-
 	auto clear_lines(int count) -> void
 	{
 		for (int i = 0; i < count; ++i)

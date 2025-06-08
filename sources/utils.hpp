@@ -2,6 +2,7 @@
 
 #include <cpp_inquirer/cpp_inquirer.hpp>
 #include <cstdint>
+#include <string>
 
 namespace cpp_inquirer
 {
@@ -16,5 +17,5 @@ namespace cpp_inquirer
 	auto get_key() -> key;
 	auto getline() -> std::string;
 	auto print_label(const std::string& label) -> void;
-	auto convert_pair_options_to_map_options(const pair_options& options) -> map_options;
+	auto handle_input_error(question* question, const std::string& input) -> std::string;
 }  // namespace cpp_inquirer

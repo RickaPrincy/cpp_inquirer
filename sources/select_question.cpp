@@ -10,26 +10,13 @@ namespace cpp_inquirer
 
 	select_question::select_question(std::string name,
 		std::string label,
-		map_options options,
+		std::vector<pair_of_string> options,
 		when_callback when)
-		: question(std::move(name),
-			  std::move(label),
-			  question_type::text,
-			  std::move(options),
-			  std::move(when))
 	{
-	}
-
-	select_question::select_question(std::string name,
-		std::string label,
-		pair_options options,
-		when_callback when)
-		: question(std::move(name),
-			  std::move(label),
-			  question_type::select,
-			  options,
-			  std::move(when))
-	{
+		this->m_name = std::move(name);
+		this->m_label = std::move(label);
+		this->m_when = std::move(when);
+		this->m_options = std::move(options);
 	}
 
 	auto select_question::prompt() -> std::string
@@ -72,14 +59,16 @@ namespace cpp_inquirer
 		}
 	}
 
-	auto select_question::prompt(std::string label, pair_options options) -> std::string
-	{
-		return select_question("QUESTION", std::move(label), options).prompt();
-	}
-
-	auto select_question::prompt(std::string label, map_options options) -> std::string
+	auto select_question::prompt(std::string label, std::vector<pair_of_string> options)
+		-> std::string
 	{
 		return select_question("QUESTION", std::move(label), std::move(options)).prompt();
+	}
+
+	auto select_question::prompt(std::string label, std::initializer_list<pair_of_string> options)
+		-> std::string
+	{
+		return select_question::prompt(std::move(label), std::vector<pair_of_string>(options));
 	}
 
 	auto clear_lines(int count) -> void

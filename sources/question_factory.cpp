@@ -7,12 +7,13 @@ namespace cpp_inquirer
 	auto question_factory::make_question(std::string name,
 		std::string label,
 		question_type type,
-		map_options options,
+		std::vector<pair_of_string> options,
+		std::vector<pair_of_string> validators,
 		when_callback when) -> std::shared_ptr<question>
 	{
 		if (question_type::text == type)
 		{
-			return std::make_shared<text_question>(name, label, when);
+			return std::make_shared<text_question>(name, label, validators, when);
 		}
 
 		if (question_type::boolean == type)

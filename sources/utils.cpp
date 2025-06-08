@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
-#include <iostream>
 #include <cpp_inquirer/color.hpp>
+#include <iostream>
 #include <stdexcept>
 
 #ifdef _WIN32
@@ -63,18 +63,7 @@ namespace cpp_inquirer
 #endif
 	}
 
-	auto convert_pair_options_to_map_options(const pair_options& options) -> map_options
-	{
-		map_options mapped{};
-		for (const auto& [key, value] : options)
-		{
-			mapped[key] = value;
-		}
-
-		return mapped;
-	}
-
-	auto print_label(const std::string& label) -> void
+	auto print_label(const std::string &label) -> void
 	{
 		std::cout << cpp_inquirer::color::b_white << label << ": " << cpp_inquirer::color::reset;
 	}
@@ -89,5 +78,23 @@ namespace cpp_inquirer
 		}
 
 		return input;
+	}
+
+	auto handle_input_error(question *question, const std::string &input) -> std::string
+	{
+		auto [pattern, error_message] = question->match(input);
+
+		if (pattern.empty())
+		{
+			return input;
+		}
+
+		if (error_message.empty())
+		{
+			error_message = "Must match " + pattern;
+		}
+
+		std::cout << color::red << error_message << "\n" << color::reset;
+		return question->prompt();
 	}
 }  // namespace cpp_inquirer

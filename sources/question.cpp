@@ -1,46 +1,24 @@
 #include <cpp_inquirer/cpp_inquirer.hpp>
-
-#include "utils.hpp"
+#include <regex>
 
 namespace cpp_inquirer
 {
+	auto question::match(const std::string& input) const -> pair_of_string
+	{
+		for (const auto& [pattern, error_message] : this->m_validators)
+		{
+			if (!std::regex_match(input, std::regex(pattern)))
+			{
+				return { pattern, error_message };
+			}
+		}
+
+		return { "", "" };
+	}
+
 	auto question::builder() -> question_builder
 	{
 		return question_builder{};
-	}
-
-	question::question(std::string name, std::string label, question_type type, when_callback when)
-		: m_name(std::move(name)),
-		  m_label(std::move(label)),
-		  m_type(type),
-		  m_when(std::move(when))
-	{
-	}
-
-	question::question(std::string name,
-		std::string label,
-		question_type type,
-		map_options options,
-		when_callback when)
-		: m_name(std::move(name)),
-		  m_label(std::move(label)),
-		  m_options(std::move(options)),
-		  m_type(type),
-		  m_when(std::move(when))
-	{
-	}
-
-	question::question(std::string name,
-		std::string label,
-		question_type type,
-		pair_options options,
-		when_callback when)
-		: m_name(std::move(name)),
-		  m_label(std::move(label)),
-		  m_type(type),
-		  m_when(std::move(when))
-	{
-		this->m_options = convert_pair_options_to_map_options(options);
 	}
 
 	auto question::get_name() const -> const std::string&
@@ -58,7 +36,7 @@ namespace cpp_inquirer
 		return this->m_type;
 	}
 
-	auto question::get_options() const -> const map_options&
+	auto question::get_options() const -> const std::vector<pair_of_string>&
 	{
 		return this->m_options;
 	}

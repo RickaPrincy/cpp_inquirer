@@ -3,7 +3,7 @@
 namespace cpp_inquirer
 {
 	inquirer::inquirer(std::initializer_list<std::shared_ptr<question>> questions)
-		: m_questions(questions)
+		: m_questions(std::vector<std::shared_ptr<question>>(questions))
 	{
 	}
 

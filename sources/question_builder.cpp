@@ -1,8 +1,6 @@
 #include <cpp_inquirer/cpp_inquirer.hpp>
 #include <stdexcept>
 
-#include "utils.hpp"
-
 namespace cpp_inquirer
 {
 	question_builder::question_builder() : m_question(std::make_shared<text_question>("", ""))
@@ -21,16 +19,28 @@ namespace cpp_inquirer
 		return *this;
 	}
 
-	auto question_builder::options(pair_options options) -> question_builder&
-	{
-		this->m_question->m_options = convert_pair_options_to_map_options(options);
-		return *this;
-	}
-
-	auto question_builder::options(map_options options) -> question_builder&
+	auto question_builder::options(std::vector<pair_of_string> options) -> question_builder&
 	{
 		this->m_question->m_options = std::move(options);
 		return *this;
+	}
+
+	auto question_builder::options(std::initializer_list<pair_of_string> options)
+		-> question_builder&
+	{
+		return this->options(std::vector<pair_of_string>(options));
+	}
+
+	auto question_builder::validators(std::vector<pair_of_string> validators) -> question_builder&
+	{
+		this->m_question->m_validators = std::move(validators);
+		return *this;
+	}
+
+	auto question_builder::validators(std::initializer_list<pair_of_string> validators)
+		-> question_builder&
+	{
+		return this->validators(std::vector<pair_of_string>(validators));
 	}
 
 	auto question_builder::type(question_type type) -> question_builder&
@@ -65,6 +75,7 @@ namespace cpp_inquirer
 			this->m_question->m_label,
 			this->m_question->m_type,
 			this->m_question->m_options,
+			this->m_question->m_validators,
 			this->m_question->m_when);
 	}
 

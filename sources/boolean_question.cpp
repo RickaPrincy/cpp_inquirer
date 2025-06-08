@@ -5,8 +5,10 @@
 namespace cpp_inquirer
 {
 	boolean_question::boolean_question(std::string name, std::string label, when_callback when)
-		: question(std::move(name), std::move(label), question_type::text, std::move(when))
 	{
+		this->m_name = std::move(name);
+		this->m_label = std::move(label);
+		this->m_when = std::move(when);
 	}
 
 	auto boolean_question::prompt() -> std::string

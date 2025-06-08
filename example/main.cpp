@@ -10,6 +10,7 @@ auto main(int argc, char *argv[]) -> int
 			  .name("project_name")
 			  .label("What is the name of your project")
 			  .type(question_type::text)
+			  .validators({ { "[a-z]{4}", "must be a lowercase" } })
 			  .build())
 		.add(question::builder()
 				.name("license")
@@ -24,10 +25,9 @@ auto main(int argc, char *argv[]) -> int
 				.when(callback::is_none_of("license", { "GPL", "UNLICENSE" }))
 				.build());
 
-	const auto answers = q.prompt();
-	for (auto &answer : answers)
+	for (const auto &[name, answer] : q.prompt())
 	{
-		std::cout << answer.first << " -> " << answer.second << "\n";
+		std::cout << name << " -> " << answer << "\n";
 	}
 
 	return 0;

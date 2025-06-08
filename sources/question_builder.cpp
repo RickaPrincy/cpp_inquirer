@@ -31,16 +31,17 @@ namespace cpp_inquirer
 		return this->options(std::vector<pair_of_string>(options));
 	}
 
-	auto question_builder::validators(std::vector<pair_of_string> validators) -> question_builder&
+	auto question_builder::validators(std::vector<std::shared_ptr<validator>> validators)
+		-> question_builder&
 	{
 		this->m_question->m_validators = std::move(validators);
 		return *this;
 	}
 
-	auto question_builder::validators(std::initializer_list<pair_of_string> validators)
+	auto question_builder::validators(std::initializer_list<std::shared_ptr<validator>> validators)
 		-> question_builder&
 	{
-		return this->validators(std::vector<pair_of_string>(validators));
+		return this->validators(std::vector<std::shared_ptr<validator>>(validators));
 	}
 
 	auto question_builder::type(question_type type) -> question_builder&
@@ -71,7 +72,7 @@ namespace cpp_inquirer
 			throw std::runtime_error("select question must have at least one option");
 		}
 
-		return question_factory::make_question(this->m_question->m_name,
+		return question_factory::make(this->m_question->m_name,
 			this->m_question->m_label,
 			this->m_question->m_type,
 			this->m_question->m_options,

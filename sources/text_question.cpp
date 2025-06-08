@@ -6,7 +6,7 @@ namespace cpp_inquirer
 {
 	text_question::text_question(std::string name,
 		std::string label,
-		std::vector<pair_of_string> validators,
+		std::vector<std::shared_ptr<validator>> validators,
 		when_callback when)
 	{
 		this->m_name = std::move(name);
@@ -22,15 +22,16 @@ namespace cpp_inquirer
 		return handle_input_error(this, input);
 	}
 
-	auto text_question::prompt(std::string label, std::vector<pair_of_string> validators)
-		-> std::string
+	auto text_question::prompt(std::string label,
+		std::vector<std::shared_ptr<validator>> validators) -> std::string
 	{
 		return text_question("QUESTION", std::move(label), std::move(validators)).prompt();
 	}
 
-	auto text_question::prompt(std::string label, std::initializer_list<pair_of_string> validators)
-		-> std::string
+	auto text_question::prompt(std::string label,
+		std::initializer_list<std::shared_ptr<validator>> validators) -> std::string
 	{
-		return text_question::prompt(std::move(label), std::vector<pair_of_string>(validators));
+		return text_question::prompt(
+			std::move(label), std::vector<std::shared_ptr<validator>>(validators));
 	}
 }  // namespace cpp_inquirer

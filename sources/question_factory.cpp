@@ -4,11 +4,11 @@
 
 namespace cpp_inquirer
 {
-	auto question_factory::make_question(std::string name,
+	auto question_factory::make(std::string name,
 		std::string label,
 		question_type type,
 		std::vector<pair_of_string> options,
-		std::vector<pair_of_string> validators,
+		std::vector<std::shared_ptr<validator>> validators,
 		when_callback when) -> std::shared_ptr<question>
 	{
 		if (question_type::text == type)

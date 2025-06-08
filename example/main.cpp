@@ -10,7 +10,7 @@ auto main(int argc, char *argv[]) -> int
 			  .name("project_name")
 			  .label("What is the name of your project")
 			  .type(question_type::text)
-			  .validators({ { "[a-z]{4}", "must be a lowercase" } })
+			  .validators({ validator_factory::optional(), validator_factory::email() })
 			  .build())
 		.add(question::builder()
 				.name("license")

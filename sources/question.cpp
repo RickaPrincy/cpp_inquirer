@@ -3,17 +3,27 @@
 
 namespace cpp_inquirer
 {
-	auto question::match(const std::string& input) const -> pair_of_string
+	auto question::match(const std::string& input) const -> std::shared_ptr<validator>
 	{
-		for (const auto& [pattern, error_message] : this->m_validators)
+		for (const auto& validator : this->m_validators)
 		{
-			if (!std::regex_match(input, std::regex(pattern)))
+			if (!std::regex_match(input, std::regex(validator->get_pattern())))
 			{
-				return { pattern, error_message };
+				if (validator->skip_next_validators_if_match())
+				{
+					continue;
+				}
+
+				return validator;
+			}
+
+			if (validator->skip_next_validators_if_match())
+			{
+				return nullptr;
 			}
 		}
 
-		return { "", "" };
+		return nullptr;
 	}
 
 	auto question::builder() -> question_builder

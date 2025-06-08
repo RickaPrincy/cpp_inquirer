@@ -82,19 +82,14 @@ namespace cpp_inquirer
 
 	auto handle_input_error(question *question, const std::string &input) -> std::string
 	{
-		auto [pattern, error_message] = question->match(input);
+		auto validator = question->match(input);
 
-		if (pattern.empty())
+		if (validator == nullptr)
 		{
 			return input;
 		}
 
-		if (error_message.empty())
-		{
-			error_message = "Must match " + pattern;
-		}
-
-		std::cout << color::red << error_message << "\n" << color::reset;
+		std::cout << color::red << validator->get_message() << "\n" << color::reset;
 		return question->prompt();
 	}
 }  // namespace cpp_inquirer

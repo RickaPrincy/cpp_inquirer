@@ -22,26 +22,67 @@ namespace cpp_inquirer
 
 	class question_builder;
 
+	class validator
+	{
+	protected:
+		std::string m_pattern{}, m_message{};
+		bool m_skip_next_validators_if_match{ false };
+
+	public:
+		validator(std::string pattern,
+			std::string message,
+			bool skip_next_validators_if_match = false);
+
+		[[nodiscard]] auto get_pattern() -> std::string;
+		[[nodiscard]] auto get_message() -> std::string;
+		[[nodiscard]] auto skip_next_validators_if_match() -> bool;
+
+		virtual auto match(const std::string &input) -> bool;
+	};
+
+	class validator_factory
+	{
+	public:
+		static auto optional(std::string message = "") -> std::shared_ptr<validator>;
+		static auto required(std::string message = "Required") -> std::shared_ptr<validator>;
+		static auto min_length(int n, std::string message = "") -> std::shared_ptr<validator>;
+		static auto max_length(int n, std::string message = "") -> std::shared_ptr<validator>;
+		static auto number(std::string message = "Must be an integer")
+			-> std::shared_ptr<validator>;
+		static auto floating(std::string message = "Must be a float") -> std::shared_ptr<validator>;
+		static auto lowercase(std::string message = "Must be lowercase")
+			-> std::shared_ptr<validator>;
+		static auto uppercase(std::string message = "Must be uppercase")
+			-> std::shared_ptr<validator>;
+		static auto email(std::string message = "Invalid email format")
+			-> std::shared_ptr<validator>;
+		static auto make(std::string pattern,
+			std::string message = "",
+			bool skip_next_validators_if_match = false) -> std::shared_ptr<validator>;
+	};
+
 	class question
 	{
 	protected:
 		when_callback m_when{};
 		std::string m_name{}, m_label{}, m_default{};
 		question_type m_type{ question_type::text };
-		std::vector<pair_of_string> m_options{}, m_validators{};
+		std::vector<std::shared_ptr<validator>> m_validators{};
+		std::vector<pair_of_string> m_options{};
 
 	public:
 		question() = default;
 
 		auto add_validator(std::string validator) -> void;
 
-		[[nodiscard]] auto match(const std::string &input) const -> pair_of_string;
+		[[nodiscard]] auto match(const std::string &input) const -> std::shared_ptr<validator>;
 		[[nodiscard]] auto is_visible(const answers &answers) const -> bool;
 		[[nodiscard]] auto get_name() const -> const std::string &;
 		[[nodiscard]] auto get_label() const -> const std::string &;
 		[[nodiscard]] auto get_type() const -> question_type;
 		[[nodiscard]] auto get_options() const -> const std::vector<pair_of_string> &;
-		[[nodiscard]] auto get_validators() const -> const std::vector<pair_of_string> &;
+		[[nodiscard]] auto get_validators() const
+			-> const std::vector<std::shared_ptr<validator>> &;
 
 		virtual auto prompt() -> std::string = 0;
 		virtual ~question() = default;
@@ -56,14 +97,14 @@ namespace cpp_inquirer
 	public:
 		text_question(std::string name,
 			std::string label,
-			std::vector<pair_of_string> validators = {},
+			std::vector<std::shared_ptr<validator>> validators = {},
 			when_callback when = {});
 
 		auto prompt() -> std::string override;
 
-		static auto prompt(std::string label, std::initializer_list<pair_of_string> validators)
-			-> std::string;
-		static auto prompt(std::string label, std::vector<pair_of_string> validators)
+		static auto prompt(std::string label,
+			std::initializer_list<std::shared_ptr<validator>> validators) -> std::string;
+		static auto prompt(std::string label, std::vector<std::shared_ptr<validator>> validators)
 			-> std::string;
 	};
 
@@ -97,11 +138,11 @@ namespace cpp_inquirer
 		question_factory() = default;
 
 	public:
-		static auto make_question(std::string name,
+		static auto make(std::string name,
 			std::string label,
 			question_type type,
 			std::vector<pair_of_string> options,
-			std::vector<pair_of_string> validators,
+			std::vector<std::shared_ptr<validator>> validators,
 			when_callback when) -> std::shared_ptr<question>;
 	};
 
@@ -121,8 +162,9 @@ namespace cpp_inquirer
 		auto options(std::vector<pair_of_string> options) -> question_builder &;
 		auto options(std::initializer_list<pair_of_string> options) -> question_builder &;
 
-		auto validators(std::vector<pair_of_string> validators) -> question_builder &;
-		auto validators(std::initializer_list<pair_of_string> validators) -> question_builder &;
+		auto validators(std::vector<std::shared_ptr<validator>> validators) -> question_builder &;
+		auto validators(std::initializer_list<std::shared_ptr<validator>> validators)
+			-> question_builder &;
 
 		auto build() -> std::shared_ptr<question>;
 	};

@@ -8,7 +8,9 @@ set(LIB_SOURCES
   select_question.cpp
   question_builder.cpp
   question_factory.cpp
+  validator.cpp
   evaluate.cpp
+  validator_factory.cpp
   callback.cpp
   utils.cpp
 )

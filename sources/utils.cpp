@@ -65,7 +65,8 @@ namespace cpp_inquirer
 
 	auto print_label(const std::string &label) -> void
 	{
-		std::cout << cpp_inquirer::color::b_white << label << ": " << cpp_inquirer::color::reset;
+		std::cout << cpp_inquirer::color::green << "? " << cpp_inquirer::color::b_white << label
+				  << "? " << cpp_inquirer::color::reset;
 	}
 
 	auto getline() -> std::string
@@ -89,7 +90,8 @@ namespace cpp_inquirer
 			return input;
 		}
 
-		std::cout << color::red << validator->get_message() << "\n" << color::reset;
+		std::cout << color::red << ">> " << color::white << validator->get_message() << "\n"
+				  << color::reset;
 		return question->prompt();
 	}
 }  // namespace cpp_inquirer

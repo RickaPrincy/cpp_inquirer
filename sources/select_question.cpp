@@ -34,13 +34,15 @@ namespace cpp_inquirer
 
 		while (true)
 		{
-			std::cout << color::b_white << this->m_label << ": " << color::reset << "\n";
+			print_label(this->m_label);
+			std::cout << "\n";
 
 			int i = 0;
 			for (const auto& [key, val] : this->m_options)
 			{
 				if (i == current)
-					std::cout << color::b_magenta << "> " << val << color::reset << "\n";
+					std::cout << color::b_green << "> " << color::blue << val << color::reset
+							  << "\n";
 				else
 					std::cout << "  " << val << "\n";
 				++i;

@@ -1,4 +1,6 @@
+#include <cpp_inquirer/color.hpp>
 #include <cpp_inquirer/cpp_inquirer.hpp>
+#include <iostream>
 
 #include "utils.hpp"
 
@@ -18,7 +20,10 @@ namespace cpp_inquirer
 	auto text_question::prompt() -> std::string
 	{
 		cpp_inquirer::print_label(this->m_label);
+		std::cout << cpp_inquirer::color::blue;
 		const auto input = getline();
+		std::cout << cpp_inquirer::color::reset;
+
 		return handle_input_error(this, input);
 	}
 

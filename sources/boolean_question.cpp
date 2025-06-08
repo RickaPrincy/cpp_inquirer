@@ -1,4 +1,6 @@
+#include <cpp_inquirer/color.hpp>
 #include <cpp_inquirer/cpp_inquirer.hpp>
+#include <iostream>
 
 #include "utils.hpp"
 
@@ -16,7 +18,10 @@ namespace cpp_inquirer
 		while (true)
 		{
 			cpp_inquirer::print_label(this->m_label + " (y/n)");
+			std::cout << cpp_inquirer::color::blue;
 			auto input = getline();
+			std::cout << cpp_inquirer::color::reset;
+
 			if (input == "y" || input == "Y")
 			{
 				return "true";

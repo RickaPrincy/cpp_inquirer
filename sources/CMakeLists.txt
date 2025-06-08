@@ -1,6 +1,17 @@
 project(${CPP_INQUIRER_LIB_NAME} VERSION ${CPP_INQUIRER_LIB_VERSION} LANGUAGES CXX)
 
-set(LIB_SOURCES cpp_inquirer.cpp)
+set(LIB_SOURCES 
+  cpp_inquirer.cpp
+  question.cpp
+  text_question.cpp
+  boolean_question.cpp
+  select_question.cpp
+  question_builder.cpp
+  question_factory.cpp
+  evaluate.cpp
+  callback.cpp
+  utils.cpp
+)
 
 # Create the library
 if(BUILD_SHARED_LIBS)
@@ -14,7 +25,7 @@ target_include_directories(
   ${CPP_INQUIRER_LIB_NAME} PRIVATE $<BUILD_INTERFACE:${CPP_INQUIRER_SOURCE_DIR}/include>)
 
 # target_link
-#target_link_libraries(${CPP_INQUIRER_LIB_NAME} PUBLIC rcli)
+#target_link_libraries(${CPP_INQUIRER_LIB_NAME} PUBLIC cpp_inquirer)
 
 # set properties
 set_target_properties(

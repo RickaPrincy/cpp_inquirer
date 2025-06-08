@@ -21,7 +21,7 @@ set(CPP_INQUIRER_VERSION ${PROJECT_VERSION})
 set(CPP_INQUIRER_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 
 # list of options
-option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
+option(BUILD_SHARED_LIBS "Build cpp_inquirer as a shared library" ON)
 option(CPP_INQUIRER_LIB_BUILD "Build cpp_inquirer lib" ON)
 option(CPP_INQUIRER_LIB_INSTALL "Install cpp_inquirer lib" ${CPP_INQUIRER_IS_MAIN_PROJECT})
 

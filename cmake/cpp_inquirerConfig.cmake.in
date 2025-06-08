@@ -1,2 +1,2 @@
 # your_config here
-# ex: find_package(rcli)
+# ex: find_package(cpp_inquirer)

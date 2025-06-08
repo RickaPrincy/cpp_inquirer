@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# deps
-#find_package(rcli REQUIRED)
-
 set(CPP_INQUIRER_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CPP_INQUIRER_IS_MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
@@ -24,8 +21,7 @@ set(CPP_INQUIRER_VERSION ${PROJECT_VERSION})
 set(CPP_INQUIRER_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 
 # list of options
-option(BUILD_SHARED_LIBS "Build rcli as a shared library"
-       ${CPP_INQUIRER_IS_MAIN_PROJECT})
+option(BUILD_SHARED_LIBS "Build rcli as a shared library" ON)
 option(CPP_INQUIRER_LIB_BUILD "Build cpp_inquirer lib" ON)
 option(CPP_INQUIRER_LIB_INSTALL "Install cpp_inquirer lib" ${CPP_INQUIRER_IS_MAIN_PROJECT})
 
@@ -58,22 +54,11 @@ if(CPP_INQUIRER_IS_MAIN_PROJECT)
     @ONLY)
 endif()
 
-add_subdirectory(sources)
-
-# clang-format configuration
-find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
-if(CLANG_FORMAT_EXECUTABLE)
-  file(GLOB_RECURSE ALL_SOURCE_FILES "${CPP_INQUIRER_SOURCE_DIR}/sources/*.cpp"
-       "${CPP_INQUIRER_SOURCE_DIR}/include/cpp_inquirer/*.hpp")
-  add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
-    COMMENT "Running clang-format")
-else()
-  message(
-    WARNING "clang-format not found. Clang-format target will not be available."
-  )
+if(NOT CMAKE_BUILD_SHARED_LIBS)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 endif()
+
+add_subdirectory(sources)
 
 # CPack configuration
 set(CPACK_PACKAGE_VENDOR "RickaPrincy <rckprincy@gmail.com>")
@@ -81,3 +66,42 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
     C++ inquirer
 )
 include(CPack)
+
+# clang-format
+find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
+if(CLANG_FORMAT_EXECUTABLE)
+  file(GLOB_RECURSE ALL_SOURCE_FILES
+     "${CPP_INQUIRER_SOURCE_DIR}/sources/*.cpp"
+     "${CPP_INQUIRER_SOURCE_DIR}/sources/*.hpp"
+     "${CPP_INQUIRER_SOURCE_DIR}/include/cpp_inquirer/*.hpp")
+
+  add_custom_target(format
+    COMMAND ${CLANG_FORMAT_EXECUTABLE} -i -style=file ${ALL_SOURCE_FILES}
+    COMMENT "Running clang-format to format code"
+  )
+
+  add_custom_target(format-check
+    COMMAND ${CLANG_FORMAT_EXECUTABLE} --dry-run --Werror -style=file ${ALL_SOURCE_FILES}
+    COMMENT "Checking code format (clang-format) - will fail if formatting issues"
+  )
+else()
+  message(WARNING "clang-format not found. Format targets will NOT be available.")
+endif()
+
+# clang-tidy
+find_program(CLANG_TIDY_EXECUTABLE NAMES clang-tidy)
+if(CLANG_TIDY_EXECUTABLE)
+  if(NOT ALL_SOURCE_FILES)
+    file(GLOB_RECURSE ALL_SOURCE_FILES
+       "${CPP_INQUIRER_SOURCE_DIR}/sources/*.cpp"
+       "${CPP_INQUIRER_SOURCE_DIR}/sources/*.hpp"
+       "${CPP_INQUIRER_SOURCE_DIR}/include/cpp_inquirer/*.hpp")
+  endif()
+  
+  add_custom_target(lint
+    COMMAND ${CLANG_TIDY_EXECUTABLE} -p ${CMAKE_CURRENT_BINARY_DIR} ${ALL_SOURCE_FILES}
+    COMMENT "Running clang-tidy"
+  )
+else()
+  message(WARNING "clang-tidy not found. clang-tidy target will NOT be available.")
+endif()

@@ -1,0 +1,1 @@
+#define CPP_INQUIRER_VERSION "0.0.1"

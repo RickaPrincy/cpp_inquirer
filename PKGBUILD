@@ -5,9 +5,9 @@ pkgrel=1
 pkgdesc="C++ inquirer"
 arch=('x86_64')
 depends=()
-url="https://github.com/RickaPrincy/cpp-inquirer"
+url="https://github.com/RickaPrincy/cpp_inquirer"
 license=('MIT')
-source=("cpp_inquirer@$pkgver.tar.gz::https://github.com/RickaPrincy/cpp-inquirer/releases/download/v0.0.1/cpp_inquirer@$pkgver.tar.gz")
+source=("cpp_inquirer@$pkgver.tar.gz::https://github.com/RickaPrincy/cpp_inquirer/releases/download/v0.0.1/cpp_inquirer@$pkgver.tar.gz")
 
 sha256sums=("SHASUM")
 

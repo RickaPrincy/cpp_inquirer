@@ -11,8 +11,18 @@ A lightweight, extensible C++ library that interactively collects user input thr
 - [Features](#features)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
+	- [Text question](#text_question)
+	- [Boolean question](#boolean_question)
+	- [Select question](#select_question)
+	- [Inquirer Class](#inquirer-class)
 - [Validators](#validators)
+	- [How to use ?](#how-to-use-)
+	- [Validator Behavior](#validator-behavior)
+	- [Built-in Validators](#built-in-validators)
+	- [Custom Validators](#custom-validators)
 - [When Callbacks](#when-callback)
+	- [Usage](#usage)
+	- [Built-in Callback](#built-in-callback)
 - [License](#license)
 
 ## Features
@@ -39,7 +49,7 @@ yay -Sy cpp_inquirer
 #### Option 1 — Add cpp_inquirer as submodule (recommended)
 
 ```bash
-git submodule add https://github.com/RickaPrincy/cpp-inquirer.git external/cpp_inquirer
+git submodule add https://github.com/RickaPrincy/cpp_inquirer.git external/cpp_inquirer
 
 git submodule update --init --recursive
 ```
@@ -56,9 +66,9 @@ target_link_libraries(your_target PRIVATE cpp_inquirer)
 
 Example of how to build:
 ```bash
-git clone -b v0.0.1 https://github.com/RickaPrincy/cpp-inquirer 
+git clone -b v0.0.1 https://github.com/RickaPrincy/cpp_inquirer 
 
-cd cpp-inquirer 
+cd cpp_inquirer 
 
 mkdir build
 

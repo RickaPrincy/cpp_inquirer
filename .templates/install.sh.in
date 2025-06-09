@@ -1,5 +1,5 @@
 #! /bin/bash
-git clone -b v@CPP_INQUIRER_LIB_VERSION@ https://github.com/RickaPrincy/cpp-inquirer 
+git clone -b v@CPP_INQUIRER_LIB_VERSION@ https://github.com/RickaPrincy/cpp_inquirer 
 cd @CPP_INQUIRER_LIB_NAME@ 
 mkdir build
 cd build

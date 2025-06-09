@@ -9,7 +9,7 @@ url="https://github.com/RickaPrincy/cpp_inquirer"
 license=('MIT')
 source=("cpp_inquirer@$pkgver.tar.gz::https://github.com/RickaPrincy/cpp_inquirer/releases/download/v0.0.1/cpp_inquirer@$pkgver.tar.gz")
 
-sha256sums=("SHASUM")
+sha256sums=("1014298edf7b17be0218a8f36f733224b982ddbcf7c4352cca8b3971c5b29a81")
 
 package() {
     echo "Installing to \"$pkgdir/usr/\""

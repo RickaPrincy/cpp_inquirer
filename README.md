@@ -64,6 +64,11 @@ target_link_libraries(your_target PRIVATE cpp_inquirer)
 
 - Build and then link the library with your project it 
 
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/RickaPrincy/cpp_inquirer/main/install.sh)
+```
+
 Example of how to build:
 ```bash
 git clone -b v0.0.1 https://github.com/RickaPrincy/cpp_inquirer 
